@@ -13,5 +13,8 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
     show-sql: true
+  profiles:
+    active:
+    -  prod
 server:
   port: 8079
