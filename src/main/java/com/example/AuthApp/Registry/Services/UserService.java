@@ -6,7 +6,7 @@ public interface UserService {
 	userDto createUser(userDto user);
 	userDto getUserByEmail(String email);
 	userDto updateUser(userDto user,String userId);
-	void deleteUser(String userId);
+	String deleteUser(String userId);
 	userDto getUserById(String userId);
 	Iterable<userDto> getAllUsers();
 }

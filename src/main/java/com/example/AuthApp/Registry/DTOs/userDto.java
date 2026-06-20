@@ -8,6 +8,16 @@ import java.util.UUID;
 import com.example.AuthApp.Registry.Entities.Role;
 import com.example.AuthApp.Registry.Enum.Provider;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class userDto {
 	private UUID id;
 	private String email;

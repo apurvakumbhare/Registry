@@ -48,7 +48,7 @@ public class User {
 	@UpdateTimestamp
 	private Instant updatedAt;
 	@Enumerated(EnumType.STRING)
-	private Provider provider;
+	private Provider provider=Provider.LOCAL;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles_Mapping",joinColumns = @JoinColumn(name = "user_id") ,inverseJoinColumns = @JoinColumn(name="role_id") )
 	private Set<Role> roles=new HashSet<>();
