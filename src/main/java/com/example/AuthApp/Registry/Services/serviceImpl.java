@@ -58,7 +58,9 @@ public class serviceImpl implements UserService{
 			toBeSaved.setEnable(user.isEnable());
 			toBeSaved.setName(user.getName());
 			toBeSaved.setPassword(user.getPassword());
-			toBeSaved.setProvider(user.getProvider());
+			if(user.getProvider() == null) {
+			    toBeSaved.setProvider(Provider.LOCAL);
+			}else toBeSaved.setProvider(user.getProvider());
 			toBeSaved.setRoles(user.getRoles());
 			return modelMapper.map(repository.save(toBeSaved),userDto.class);
 	}
@@ -83,14 +85,8 @@ public class serviceImpl implements UserService{
 	@Override
 	@Transactional
 	public Iterable<userDto> getAllUsers() {
-		List<User> list=repository.findAll();
-		List<userDto> users=new ArrayList<>();
-		Iterator iterator = list.iterator();
-		while ( iterator.hasNext()) {
-			users.add(modelMapper.map(iterator, userDto.class));
-			
-		}
+		
 	
-	return users;
+	return repository.findAll().stream().map(user->modelMapper.map(user, userDto.class)).toList();
 	}
 }
