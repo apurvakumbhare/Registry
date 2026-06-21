@@ -1,4 +1,4 @@
-package com.example.AuthApp.Registry.Services;
+package com.example.AuthApp.Registry.Services.Impls;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,6 +14,7 @@ import com.example.AuthApp.Registry.Entities.User;
 import com.example.AuthApp.Registry.Enum.Provider;
 import com.example.AuthApp.Registry.Exceptions.ResourceNotFoundException;
 import com.example.AuthApp.Registry.Repositories.userRepository;
+import com.example.AuthApp.Registry.Services.UserService;
 
 import jakarta.transaction.Transactional;
 

@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.AuthApp.Registry.DTOs.userDto;
 import com.example.AuthApp.Registry.Services.UserService;
-import com.example.AuthApp.Registry.Services.serviceImpl;
+import com.example.AuthApp.Registry.Services.Impls.serviceImpl;
 
 @RestController
-@RequestMapping("/Auth")
+@RequestMapping("/Api")
 public class userController {
 	@Autowired
 	private UserService userService;
