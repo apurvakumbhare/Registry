@@ -1,12 +1,17 @@
 package com.example.AuthApp.Registry.Entities;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.AuthApp.Registry.Enum.Provider;
 
@@ -34,7 +39,7 @@ import lombok.ToString;
 @ToString
 @Builder
 @Entity
-public class User {
+public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
@@ -54,6 +59,15 @@ public class User {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles_Mapping",joinColumns = @JoinColumn(name = "user_id") ,inverseJoinColumns = @JoinColumn(name="role_id") )
 	private Set<Role> roles=new HashSet<>();
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<SimpleGrantedAuthority> list=roles.stream().map(x->new SimpleGrantedAuthority(x.getName())).toList();
+		return null;
+	}
+	@Override
+	public String getUsername() {
+		return this.email;
+	}
 	
 	
 }

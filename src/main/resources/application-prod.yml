@@ -1,3 +1,14 @@
 
 server:
   port: 8070
+
+security:
+   jwt:
+     secret: ${JWT_SECRET:1234567890123456789012345678901234567890123456789012345678901234}
+     issuer: ${JWT_ISSUER:registry}
+     access-ttl-seconds: ${JWT_ACCESS_TTL_SECONDS:60}
+     refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:120}
+     refresh-token-cookie-name: ${JWT_REFRESH_TOKEN_COOKIE_NAME:rehreshToken}
+     cookie-secure: ${JWT_COOKIE_SECURE:true}
+     cookie-http-only: ${JWT_COOKIE_HTTP_ONLY:true}
+     cookie-same-site: ${JWT_COOKIE_SAME_SITE:lax}
