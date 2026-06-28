@@ -45,4 +45,6 @@ public class userController {
 	 public ResponseEntity< Iterable<userDto>> getAllUsers(){
 			return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
 	}
+	 
+	 
 }

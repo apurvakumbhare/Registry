@@ -1,2 +1,3 @@
-2026/06/16-18:14:35.936 2af0 Creating DB C:\Users\Apurva\Desktop\SpringCodes\Security\Registry\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Sync Data\LevelDB since it was missing.
-2026/06/16-18:14:35.947 2af0 Reusing MANIFEST C:\Users\Apurva\Desktop\SpringCodes\Security\Registry\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Sync Data\LevelDB/MANIFEST-000001
+2026/06/16-18:14:51.716 64cc Reusing MANIFEST C:\Users\Apurva\Desktop\SpringCodes\Security\Registry\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Sync Data\LevelDB/MANIFEST-000001
+2026/06/16-18:14:51.718 64cc Recovering log #3
+2026/06/16-18:14:51.719 64cc Reusing old log C:\Users\Apurva\Desktop\SpringCodes\Security\Registry\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Sync Data\LevelDB/000003.log 
