@@ -1,5 +1,8 @@
 package com.example.AuthApp.Registry.Controllers;
 
+import java.time.Instant;
+import java.util.UUID;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.AuthApp.Registry.DTOs.userDto;
 import com.example.AuthApp.Registry.Entities.LoginRequest;
+import com.example.AuthApp.Registry.Entities.RefreshToken;
 import com.example.AuthApp.Registry.Entities.TokenResponse;
 import com.example.AuthApp.Registry.Entities.User;
+import com.example.AuthApp.Registry.Repositories.RefreshTokenRepository;
 import com.example.AuthApp.Registry.Repositories.userRepository;
 import com.example.AuthApp.Registry.Security.JWTService;
 import com.example.AuthApp.Registry.Services.AuthService;
@@ -26,6 +31,8 @@ import com.example.AuthApp.Registry.Services.AuthService;
 @RestController
 @RequestMapping("/Auth")
 public class AuthController {
+	@Autowired
+	private RefreshTokenRepository refreshTokenRepository;
 	@Autowired
 	private ModelMapper mapper;
 	@Autowired
@@ -43,9 +50,15 @@ public class AuthController {
 		if(!user.isEnable()) {
 			throw new DisabledException("User is Disabled");
 		}
+		
+		String jti=UUID.randomUUID().toString();
+		RefreshToken token=RefreshToken.builder().jti(jti).user(user).willExpireAt(Instant.now().plusSeconds(60)).isRevoked(false).build();
+		refreshTokenRepository.save(token);
 		String AccessToken=jwtService.generateAccessToken(user);
-		TokenResponse response=TokenResponse.of(AccessToken, "",  jwtService.parse(AccessToken).getPayload().get("typ").toString(),jwtService.getAccessTtlSeconds(),mapper.map(user, userDto.class));
-	return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+		String refreshtoken=jwtService.generateRefreshToken(user, jti);
+		TokenResponse response=TokenResponse.of(AccessToken,refreshtoken,  jwtService.parse(AccessToken).getPayload().get("typ").toString(),jwtService.getAccessTtlSeconds(),mapper.map(user, userDto.class));
+		
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 	}
 	public Authentication authenticate(LoginRequest request){
 		try {
