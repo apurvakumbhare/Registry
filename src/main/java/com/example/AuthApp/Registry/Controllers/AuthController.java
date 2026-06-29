@@ -25,12 +25,17 @@ import com.example.AuthApp.Registry.Entities.TokenResponse;
 import com.example.AuthApp.Registry.Entities.User;
 import com.example.AuthApp.Registry.Repositories.RefreshTokenRepository;
 import com.example.AuthApp.Registry.Repositories.userRepository;
+import com.example.AuthApp.Registry.Security.CookieService;
 import com.example.AuthApp.Registry.Security.JWTService;
 import com.example.AuthApp.Registry.Services.AuthService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/Auth")
 public class AuthController {
+	@Autowired 
+	private CookieService cookieService;
 	@Autowired
 	private RefreshTokenRepository refreshTokenRepository;
 	@Autowired
@@ -44,7 +49,7 @@ public class AuthController {
 	@Autowired
 	private AuthService authService;
 	@PostMapping("/login")
-	public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest request){
+	public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest request,HttpServletResponse loginResponse){
 		Authentication authentication =authenticate(request);
 		User user=repository.findByEmail(request.Email()).orElseThrow(()-> new BadCredentialsException("Invalid Username Or Password"));
 		if(!user.isEnable()) {
@@ -56,6 +61,9 @@ public class AuthController {
 		refreshTokenRepository.save(token);
 		String AccessToken=jwtService.generateAccessToken(user);
 		String refreshtoken=jwtService.generateRefreshToken(user, jti);
+		cookieService.AttachCookie(loginResponse, refreshtoken, (int) jwtService.getRefreshTtlSeconds());
+		cookieService.addNoStoreHeaders(loginResponse);
+
 		TokenResponse response=TokenResponse.of(AccessToken,refreshtoken,  jwtService.parse(AccessToken).getPayload().get("typ").toString(),jwtService.getAccessTtlSeconds(),mapper.map(user, userDto.class));
 		
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
